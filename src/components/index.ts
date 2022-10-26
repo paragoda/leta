@@ -7,3 +7,5 @@ export * from './analysis'
 
 // layout
 export * from './layout'
+
+export * from './Markdown'

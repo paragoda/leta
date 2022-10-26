@@ -1,21 +1,28 @@
 import { Finger, KeyFinger, keyFingerMatrixToLayout, Position, QWERTY } from '../models'
-
-
 import { proxy } from 'valtio'
+import { type } from 'os'
 
-const keysStore = proxy<{ keys: KeyFinger[][] }>({ keys: QWERTY, })
+type LayoutStore = {
+  name: string
+  keys: KeyFinger[][]
+}
+
+const layoutStore = proxy<LayoutStore>({
+  name: '',
+  keys: QWERTY,
+})
 
 const swapKeys = (f: Position, s: Position) => {
-  const firstKey = keysStore.keys[f.row][f.col].key
+  const firstKey = layoutStore.keys[f.row][f.col].key
 
-  keysStore.keys[f.row][f.col].key = keysStore.keys[s.row][s.col].key
-  keysStore.keys[s.row][s.col].key = firstKey
+  layoutStore.keys[f.row][f.col].key = layoutStore.keys[s.row][s.col].key
+  layoutStore.keys[s.row][s.col].key = firstKey
 }
 
 const setFinger = (position: Position, finger: Finger) => {
-  keysStore.keys[position.row][position.col].finger = finger
+  layoutStore.keys[position.row][position.col].finger = finger
 }
 
-const keysToLayout = (name: string) => keyFingerMatrixToLayout(name, keysStore.keys)
+const keysToLayout = (name: string) => keyFingerMatrixToLayout(name, layoutStore.keys)
 
-export { keysStore, swapKeys, setFinger, keysToLayout }
+export { layoutStore, swapKeys, setFinger, keysToLayout }

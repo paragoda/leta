@@ -1,4 +1,5 @@
 export * from './Row'
 export * from './ActionKeyboard'
+export * from './ViewKeyboard'
 export * from './Keyboard'
 export * from './keys'

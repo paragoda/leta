@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { State, Position } from '../../models'
 import { Row } from './Row'
 import { SystemKey, ActionKey } from './keys'
-import { keysStore, swapKeys } from '../../utils'
+import { layoutStore, swapKeys } from '../../utils'
 import { useSnapshot } from 'valtio'
 
 type ActionKeyboardProps = {
@@ -10,7 +10,7 @@ type ActionKeyboardProps = {
 }
 
 const ActionKeyboard = ({ selected }: ActionKeyboardProps) => {
-  const { keys } = useSnapshot(keysStore)
+  const { keys } = useSnapshot(layoutStore)
   const [dragged, setDragged] = useState<Position>({ row: -1, col: -1 })
 
   const drop = (row: number, col: number) => {
