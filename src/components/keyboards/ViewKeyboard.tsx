@@ -10,7 +10,7 @@ const ViewKeyboard = ({ keys }: ViewKeyboardProps) => {
 
   // top row of keyboard where last key is larger
   const TopViewRow = (row: number) => keys[row]
-    .map(({ key, finger }, col) => <Key key={`view-key-${row}`}
+    .map(({ key, finger }, col) => <Key key={`view-key-${key}`}
       className={`cursor-default ${FingerColors.get(finger)} ${col == keys[0].length - 1 ? 'w-[6.75rem]' : 'w-16'}`}
     >
       {key}
@@ -19,7 +19,9 @@ const ViewKeyboard = ({ keys }: ViewKeyboardProps) => {
 
   // home
   const ViewRow = (row: number) => keys[row]
-    .map(({ key, finger }) => <Key key={`view-key-${row}`} className={` ${FingerColors.get(finger)} w-16 cursor-default`}>{key}</Key>)
+    .map(({ key, finger }) => <Key key={`view-key-${key}`}
+      className={` ${FingerColors.get(finger)} w-16 cursor-default`}>{key}</Key>
+    )
 
 
   return (
