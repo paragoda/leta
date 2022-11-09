@@ -12,11 +12,6 @@ type NavbarProps = {
 const Navbar = ({ dark }: NavbarProps) => {
   const { user } = useUser()
 
-  // const signOut = async () => {
-  //   const { supa } = await import('../../utils/supabase')
-  //   supa.auth.signOut()
-  // }
-
   return (
     <nav className='flex-none flex justify-between items-center py-5'>
       <Link href='/'>
@@ -31,15 +26,12 @@ const Navbar = ({ dark }: NavbarProps) => {
         <TextButton><UserIcon /></TextButton>
       </Link>
 
-      {/* {user
-        ? <TextButton onClick={signOut}>Sign out</TextButton>
-        : <Link href='/auth'>
-          <TextButton>Start</TextButton>
-        </Link>
-      } */}
-
-      <Link href='/create'>
+      <Link href='/layouts/create'>
         <TextButton>Create</TextButton>
+      </Link>
+
+      <Link href='/layouts'>
+        <TextButton>Explore</TextButton>
       </Link>
 
 

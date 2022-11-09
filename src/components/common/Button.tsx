@@ -7,7 +7,7 @@ type ButtonProps = {
   children?: ReactNode
 }
 
-const sharedButtonStyle = 'text-lg rounded select-none'
+const sharedButtonStyle = 'rounded select-none'
 
 
 // Button with background

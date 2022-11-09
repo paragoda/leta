@@ -2,11 +2,11 @@ import { NextPage } from 'next'
 import { useState } from 'react'
 import {
   Center, Input, OutlinedButton, sharedButtonStyle, TextButton, Title, AnalysisTable, ActionKeyboard
-} from '../components'
+} from '../../components'
 import {
   Analysis, Finger, FingerColors, FingerNames, Position
-} from '../models'
-import { analyze, download, layoutStore, keysToLayout, setFinger } from '../utils'
+} from '../../models'
+import { analyze, download, layoutStore, keysToLayout, setFinger } from '../../utils'
 import { useSnapshot } from 'valtio'
 import Link from 'next/link'
 import { useUser } from '@supabase/auth-helpers-react'
@@ -21,8 +21,8 @@ const Create: NextPage = () => {
   const exportLayout = async (target: string) => {
     const trimName = name.trim()
     if (trimName != '') {
-      const getLayoutFile = (await import(`../utils/export/${target}`)).default
-      download(getLayoutFile(keysToLayout(name)));
+      const getLayoutFile = (await import(`../../utils/export/${target}`)).default
+      download(getLayoutFile(keysToLayout()));
     } else {
       alert('Name of layout can\'t be empty')
     }
@@ -31,7 +31,8 @@ const Create: NextPage = () => {
   const changeName = (e: any) => layoutStore.name = e.target.value
   const changeFinger = (finger: Finger) => setFinger(selected, finger)
 
-  const analyzeLayout = async () => setAnalysis(await analyze(keysToLayout(name)))
+  const layout = keysToLayout()
+  const analyzeLayout = async () => setAnalysis(await analyze(layout.keys, layout.fingers))
 
   const FingerButton = ({ finger }: { finger: Finger }) => {
     const bg = FingerColors.get(finger) ?? ''
@@ -48,9 +49,9 @@ const Create: NextPage = () => {
   return <>
     <Title>Create layout | LETA</Title>
 
-    <Center className='text-lg pb-10'>
+    <Center className='pb-10'>
 
-      <div className='w-full'>
+      <div className='w-full text-lg'>
         <ActionKeyboard selected={{ val: selected, set: setSelected }} />
       </div>
 
@@ -72,7 +73,7 @@ const Create: NextPage = () => {
         <div className='flex justify-between flex-wrap gap-y-5'>
           <OutlinedButton onClick={analyzeLayout}>Analyze</OutlinedButton>
 
-          <Link href={user ? '/' : '/auth'}>
+          <Link href={user ? '/layouts/publish' : '/auth'}>
             <OutlinedButton onClick={analyzeLayout}>Publish</OutlinedButton>
           </Link>
 

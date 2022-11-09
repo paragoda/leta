@@ -60,7 +60,7 @@ const Home: NextPage = () => {
 
           <Row>
             <Link href={user ? '/typing' : '/auth'}>
-              <OutlinedButton className='flex-auto w-[10.5rem]'>
+              <OutlinedButton className='flex-auto w-[10.5rem] text-lg'>
                 Start for free
               </OutlinedButton>
             </Link>

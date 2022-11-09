@@ -1,18 +1,27 @@
+import { KeyFinger } from './key';
+
 /*
 {
-  name: 'QWERTY',
   keys: "qwertyuiop[]\asdfghjkl;'zxcvbnm,./",
   fingers: '0123344567777012334456770123344567'
 }
 */
 
-import { Layout } from '../components';
-import { KeyFinger } from './key';
-
-type LayoutModel = {
-  name: string
+type LayoutData = {
   keys: string
   fingers: string
+}
+
+type LayoutInsertModel = LayoutData & {
+  name: string
+  description?: string
+
+  slug: string
+  uid: string // user id, who published
+}
+
+type LayoutModel = LayoutInsertModel & {
+  id: string
 }
 
 const shiftKeys = new Map([
@@ -24,10 +33,9 @@ const shiftKeys = new Map([
   [',', '<'],
   ['.', '>'],
   ['/', '?'],
-
 ])
 
-const keyFingerMatrixToLayout = (name: string, matrix: KeyFinger[][]): LayoutModel => {
+const toLayoutData = (matrix: KeyFinger[][]): LayoutData => {
   let keys = ''
   let fingers = ''
 
@@ -38,47 +46,8 @@ const keyFingerMatrixToLayout = (name: string, matrix: KeyFinger[][]): LayoutMod
     }
   }
 
-  return { name, keys, fingers }
+  return { keys, fingers }
 }
 
-export type { LayoutModel }
-export { shiftKeys, keyFingerMatrixToLayout }
-
-/* for all keys
-const shiftKeys = {
-  q: 'Q',
-  w: 'W',
-  e: 'E',
-  r: 'R',
-  t: 'T',
-  y: '',
-  u: '',
-  i: '',
-  o: '',
-  p: '',
-  '[': '',
-  ']': '',
-  '\\': '',
-  a: '',
-  s: '',
-  d: '',
-  f: '',
-  g: '',
-  h: '',
-  j: '',
-  k: '',
-  l: '',
-  ';': '',
-  '\'': '',
-  z: '',
-  x: '',
-  c: '',
-  v: '',
-  b: '',
-  n: '',
-  m: '',
-  ',': '',
-  '.': '',
-  '/': '',
-}
-*/
+export type { LayoutData, LayoutInsertModel, LayoutModel }
+export { shiftKeys, toLayoutData }

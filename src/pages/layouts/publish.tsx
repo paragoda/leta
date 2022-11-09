@@ -1,12 +1,15 @@
+import { useUser } from '@supabase/auth-helpers-react';
 import { NextPage } from 'next';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSnapshot } from 'valtio';
-import { FilledButton, Input, Markdown, OutlinedButton, TextButton, Title, ViewKeyboard } from '../components';
-import { layoutStore } from '../utils';
+import { FilledButton, Input, Markdown, OutlinedButton, Title, ViewKeyboard } from '../../components';
+import { analyze, insertLayout, keysToLayout, layoutStore, slugify, supa } from '../../utils';
 
 const PublishPage: NextPage = () => {
   const { keys } = useSnapshot(layoutStore)
   const { description, name } = useSnapshot(layoutStore, { sync: true })
+
+  const { user } = useUser()
 
   const [markdown, setMarkdown] = useState(true)
   const [preview, setPreview] = useState(false)
@@ -22,8 +25,29 @@ const PublishPage: NextPage = () => {
     return lines < 6 ? 6 : lines + 1
   }
 
-  const publish = () => {
+  // shit code, should rewrite
+  const publish = async () => {
+    if (!user) {
+      alert('Sign in/up to publish layout. Don\'t be afraid, all layout information will be saved.')
+      return
+    }
 
+    const trimName = name.trim()
+    if (trimName == '') {
+      alert('Name can\'t be empty')
+      return
+    }
+
+    const layoutData = keysToLayout()
+    const success = await insertLayout({
+      name: trimName,
+      description,
+      slug: slugify(name),
+      uid: user.id,
+      ...layoutData,
+    })
+
+    if (!success) alert('Sorry, something went wrong. Try later.')
   }
 
   return <>
